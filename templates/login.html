@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - My Old-School Social Feed{% endblock %}
+
+{% block content %}
+<h1>Login</h1>
+<form method="POST">
+  <div>
+    <label for="username">Username:</label><br>
+    <input type="text" name="username" id="username" placeholder="Enter username" required style="width:100%; background:black; color:#00FF00; border:1px solid #00FF00;">
+  </div>
+  <br>
+  <div>
+    <label for="password">Password:</label><br>
+    <input type="password" name="password" id="password" placeholder="Enter password" required style="width:100%; background:black; color:#00FF00; border:1px solid #00FF00;">
+  </div>
+  <br>
+  <button type="submit" style="background:black; color:#00FF00; border:1px solid #00FF00; padding:5px 10px;">Login</button>
+</form>
+<p>Don't have an account? <a href="{{ url_for('register') }}">Register here</a>.</p>
+{% endblock %}

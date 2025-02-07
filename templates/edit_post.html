@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Post{% endblock %}
+
+{% block content %}
+<h1>Edit Post</h1>
+<form method="POST">
+  <div>
+    <label for="content">Edit Your Post:</label><br>
+    <textarea name="content" id="content" rows="5" style="width:100%; background:black; color:#00FF00; border:1px solid #00FF00;">{{ post.content }}</textarea>
+  </div>
+  <br>
+  <button type="submit" style="background:black; color:#00FF00; border:1px solid #00FF00; padding:5px 10px;">Save Changes</button>
+</form>
+
+<p><a href="{{ url_for('index') }}">Back to feed</a></p>
+{% endblock %}

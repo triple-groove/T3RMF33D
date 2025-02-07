@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Reply to Post{% endblock %}
+
+{% block content %}
+<h1>Reply to Post</h1>
+<div class="post">
+  <div class="post-header">
+    {{ post.author.username }} - {{ post.created_at.strftime('%b %d, %Y %H:%M') }}
+  </div>
+  <div class="post-content">
+    <p>{{ post.content|embed_youtube|safe }}</p>
+  </div>
+</div>
+
+<form method="POST">
+  <div>
+    <label for="content">Your Reply:</label><br>
+    <textarea name="content" id="content" rows="3" style="width:100%; background:black; color:#00FF00; border:1px solid #00FF00;"></textarea>
+  </div>
+  <br>
+  <button type="submit" style="background:black; color:#00FF00; border:1px solid #00FF00; padding:5px 10px;">Submit Reply</button>
+</form>
+
+<p><a href="{{ url_for('index') }}">Back to feed</a></p>
+{% endblock %}

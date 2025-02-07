@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}New Post - My Old-School Social Feed{% endblock %}
+
+{% block content %}
+<h1>Create a New Post</h1>
+<form method="POST" enctype="multipart/form-data">
+  <div>
+    <label for="content">Post Content:</label><br>
+    <textarea name="content" id="content" rows="5" placeholder="What's on your mind?" 
+              style="width:100%; background:black; color:#00FF00; border:1px solid #00FF00;"></textarea>
+  </div>
+  <br>
+  <div>
+    <label for="media">Upload Media (optional):</label><br>
+    <input type="file" name="media" id="media" style="background:black; color:#00FF00; border:1px solid #00FF00;">
+  </div>
+  <br>
+  <button type="submit" style="background:black; color:#00FF00; border:1px solid #00FF00; padding:5px 10px;">
+    Submit Post
+  </button>
+</form>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard - My Old-School Social Feed{% endblock %}
+
+{% block content %}
+<h1>Admin Dashboard</h1>
+
+<h2>Users</h2>
+<ul>
+  {% for user in users %}
+    <li>
+      {{ user.username }}{% if user.is_admin %} (Admin){% endif %}
+      <!-- Button to delete user (if not self) -->
+      {% if user.id != current_user.id %}
+        <form action="{{ url_for('admin_delete_user', user_id=user.id) }}" method="POST" style="display:inline;">
+          <button type="submit" style="background:black; color:#00FF00; border:1px solid #00FF00;">Delete</button>
+        </form>
+      {% endif %}
+    </li>
+  {% endfor %}
+</ul>
+
+<h2>Posts</h2>
+<ul>
+  {% for post in posts %}
+    <li>
+      [{{ post.created_at.strftime('%b %d, %Y %H:%M') }}] {{ post.author.username }}: {{ post.content|embed_youtube|safe }}
+      <form action="{{ url_for('admin_delete_post', post_id=post.id) }}" method="POST" style="display:inline;">
+        <button type="submit" style="background:black; color:#00FF00; border:1px solid #00FF00;">Delete</button>
+      </form>
+    </li>
+  {% endfor %}
+</ul>
+
+<h2>Invitation Tokens</h2>
+<form method="POST" action="{{ url_for('admin_invite') }}">
+  <button type="submit" style="background:black; color:#00FF00; border:1px solid #00FF00; padding:5px 10px;">
+    Generate Token
+  </button>
+</form>
+
+<ul>
+  {% for token in invitations %}
+    <li>{{ token.token }} (Unused)</li>
+  {% else %}
+    <li>No available tokens</li>
+  {% endfor %}
+</ul>
+
+<p><a href="{{ url_for('index') }}">Back to feed</a></p>
+{% endblock %}

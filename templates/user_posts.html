@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ site_name }} - {{ user.username }}'s Posts{% endblock %}
+
+{% block content %}
+<h1>{{ user.username }}'s Posts</h1>
+
+{% for post in posts %}
+  <div class="post">
+    <!-- Post Header: Username (Left), Date (Right) -->
+    <div class="post-header" style="display: flex; justify-content: space-between; align-items: center;">
+      {{ post.author.username }}
+      <span style="font-size: 12px; color: #AAA; text-align: right;">
+        {{ post.created_at.strftime('%b %d, %Y %H:%M') }}
+      </span>
+    </div>
+    
+    <div class="post-content">
+      <p>{{ post.content|embed_youtube|safe }}</p>
+
+      {% if post.media_filename %}
+        {% set ext = post.media_filename.split('.')[-1].lower() %}
+        {% if ext in ['png', 'jpg', 'jpeg', 'gif'] %}
+          <img src="{{ url_for('uploaded_file', filename=post.media_filename) }}" alt="Image" style="max-width: 100%;">
+        {% elif ext in ['mp4', 'webm'] %}
+          <video width="100%" controls>
+            <source src="{{ url_for('uploaded_file', filename=post.media_filename) }}" type="video/{{ ext }}">
+            Your browser does not support the video tag.
+          </video>
+        {% endif %}
+      {% endif %}
+    </div>
+
+    <!-- Action Buttons: "Show" (left) | "Reply" (right) -->
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      {% if post.comments %}
+        <a href="javascript:void(0);" onclick="toggleReplies({{ post.id }})" style="text-decoration: none; color:#00FF00;">Show</a>
+      {% endif %}
+      <a href="{{ url_for('reply', post_id=post.id) }}" style="text-decoration: none; color:#00FF00; margin-left:auto;">Reply</a>
+    </div>
+
+    <!-- Edit & Delete Buttons (Only for Post Owner or Admin) -->
+    <div class="post-actions" style="text-align: right; margin-top: 5px;">
+      {% if current_user.id == post.author_id or current_user.is_admin %}
+        <a href="{{ url_for('edit_post', post_id=post.id) }}" style="font-size: 12px;">Edit</a> 
+        <form action="{{ url_for('delete_post', post_id=post.id) }}" method="POST" style="display:inline;">
+          <button type="submit" style="background:none; border:none; font-size: 12px; color:#00FF00; cursor:pointer; font-family: inherit;">Delete</button>
+        </form>
+      {% endif %}
+    </div>
+
+    <!-- Replies (Hidden by Default) -->
+    {% if post.comments %}
+      <div id="replies-{{ post.id }}" style="display: none; margin-left:20px;">
+        <ul>
+          {% for comment in post.comments %}
+            <li>
+              <strong>{{ comment.author.username }}</strong>: {{ comment.content }} 
+              <span style="font-size: 10px; color: #AAA;">({{ comment.created_at.strftime('%b %d, %Y %H:%M') }})</span>
+
+              <!-- Delete Reply Option -->
+              {% if current_user.id == comment.author_id or current_user.is_admin %}
+                <form action="{{ url_for('delete_reply', reply_id=comment.id) }}" method="POST" style="display:inline;">
+                  <button type="submit" style="background:none; border:none; font-size: 10px; color:#FF0000; cursor:pointer; font-family: inherit;">
+                    [Delete]
+                  </button>
+                </form>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+  </div>
+{% else %}
+  <p>No posts by this user yet.</p>
+{% endfor %}
+
+<p><a href="{{ url_for('index') }}">Back to main feed</a></p>
+
+<script>
+  function toggleReplies(postId) {
+    var replies = document.getElementById('replies-' + postId);
+    replies.style.display = replies.style.display === "none" ? "block" : "none";
+  }
+</script>
+
+{% endblock %}

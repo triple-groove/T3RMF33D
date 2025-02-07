@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ site_name }} - {{ current_user.username }}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: black;
+      color: #00FF00;
+      font-family: 'Press Start 2P', cursive;
+      text-align: center;
+    }
+    
+    /* Container */
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    /* Posts */
+    .post {
+      border: 1px solid #00FF00;
+      padding: 10px;
+      margin: 15px auto;
+      width: 90%;
+      max-width: 550px;
+      text-align: left;
+      overflow: hidden;
+    }
+
+    /* Header */
+    .post-header {
+      font-weight: bold;
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    /* Post Content */
+    .post-content {
+      margin-bottom: 10px;
+      font-size: 12px;
+      word-wrap: break-word;
+    }
+
+    /* Fix for YouTube videos */
+    .post-content iframe {
+      width: 100%;
+      max-width: 500px;
+      display: block;
+      margin: 5px auto;
+    }
+
+    /* Action buttons */
+    .post-actions {
+      font-size: 12px;
+      text-align: right;
+    }
+    
+    /* Links */
+    a {
+      color: #00FF00;
+      text-decoration: none;
+      padding: 3px;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Button styling */
+    button {
+      background: none;
+      border: none;
+      color: #00FF00;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    button:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div>
+      <a href="{{ url_for('index') }}">Home</a> | 
+      <a href="{{ url_for('new_post') }}">New Post</a> | 
+      <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+    <br>
+    {% block content %}{% endblock %}
+  </div>
+</body>
+</html>
